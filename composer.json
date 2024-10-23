@@ -1,5 +1,5 @@
 {
-        "name": "aliengen/pachyderm-valiation",
+        "name": "aliengen/pachyderm-validation",
         "description": "A Micro validation framework for Pachyderm",
         "type": "library",
         "require": {
