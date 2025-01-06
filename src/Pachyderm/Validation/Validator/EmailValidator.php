@@ -8,7 +8,7 @@ class EmailValidator implements ValidatorInterface
 {
     public function validate(mixed $value, array $options = []): bool
     {
-        if($value === null) {
+        if(empty($value)) {
             return true;
         }
 
