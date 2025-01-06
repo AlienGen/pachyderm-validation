@@ -8,7 +8,7 @@ class RegexValidator implements ValidatorInterface
 {
     public function validate(mixed $value, array $options = []): bool
     {
-        if(empty($value)) {
+        if($value === null) {
             return true;
         }
 
