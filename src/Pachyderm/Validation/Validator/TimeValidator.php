@@ -8,6 +8,10 @@ class TimeValidator implements ValidatorInterface
 {
     public function validate(mixed $value, array $options = []): bool
     {
+        if($value === null) {
+            return true;
+        }
+
         return (bool) preg_match('/^(?:2[0-3]|[01][0-9]):[0-5][0-9](?::[0-5][0-9])?$/', $value);
     }
 

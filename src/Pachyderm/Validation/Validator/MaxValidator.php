@@ -8,6 +8,10 @@ class MaxValidator implements ValidatorInterface
 {
     public function validate(mixed $value, array $options = []): bool
     {
+        if($value === null) {
+            return true;
+        }
+
         return $value <= $options[0];
     }
 

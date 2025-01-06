@@ -8,6 +8,10 @@ class EmailValidator implements ValidatorInterface
 {
     public function validate(mixed $value, array $options = []): bool
     {
+        if($value === null) {
+            return true;
+        }
+
         return filter_var($value, FILTER_VALIDATE_EMAIL);
     }
 

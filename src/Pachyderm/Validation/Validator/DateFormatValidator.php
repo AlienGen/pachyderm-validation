@@ -9,6 +9,10 @@ class DateFormatValidator implements ValidatorInterface
 {
     public function validate(mixed $value, array $options = []): bool
     {
+        if($value === null) {
+            return true;
+        }
+
         $format = $options['format'] ?? 'Y-m-d';
         $date = DateTime::createFromFormat($format, $value);
         return $date && $date->format($format) === $value;

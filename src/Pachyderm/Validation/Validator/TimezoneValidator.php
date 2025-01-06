@@ -8,6 +8,10 @@ class TimezoneValidator implements ValidatorInterface
 {
     public function validate(mixed $value, array $options = []): bool
     {
+        if($value === null) {
+            return true;
+        }
+
         return in_array($value, \DateTimeZone::listIdentifiers());
     }
 

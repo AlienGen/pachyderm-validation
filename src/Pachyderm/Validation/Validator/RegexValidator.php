@@ -8,6 +8,10 @@ class RegexValidator implements ValidatorInterface
 {
     public function validate(mixed $value, array $options = []): bool
     {
+        if($value === null) {
+            return true;
+        }
+
         return preg_match($options[0], $value);
     }
 
