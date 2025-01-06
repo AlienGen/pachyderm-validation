@@ -43,7 +43,7 @@ abstract class RequestValidator extends Request
      */
     public function __construct(mixed $body)
     {
-        parent::__construct([]);
+        parent::__construct($body);
 
         // Retrieve validation rules from the implementing class
         $fieldsRules = $this->rules();
