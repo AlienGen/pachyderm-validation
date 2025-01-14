@@ -24,6 +24,7 @@ use Pachyderm\Validation\Validator\StringValidator;
 use Pachyderm\Validation\Validator\TimeValidator;
 use Pachyderm\Validation\Validator\TimezoneValidator;
 use Exception;
+use Pachyderm\Validation\Validator\DateTimeValidator;
 
 class Validator
 {
@@ -88,6 +89,7 @@ class Validator
                 'date' => new DateValidator(),
                 'date_format' => new DateFormatValidator(),
                 'time' => new TimeValidator(),
+                'datetime' => new DateTimeValidator(),
                 'timezone' => new TimezoneValidator(),               
             ]);
         }
