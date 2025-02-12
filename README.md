@@ -26,7 +26,7 @@ use Pachyderm\Validation\Validator;
 $validator = Validator::getInstance();
 $errors = $validator->validate('required|email', $value);
 if (!empty($errors)) {
-// Handle validation errors
+    // Handle validation errors
 }
 ```
 
@@ -48,6 +48,57 @@ class MyRequestValidator extends RequestValidator
         ];
     }
 }
+```
+
+### Object Validation
+
+You can validate objects using dot notation to access nested properties:
+
+```php
+$validator = Validator::getInstance();
+$rules = [
+    'user.name' => 'required|string',
+    'user.email' => 'required|email',
+    'user.profile.age' => 'required|integer|min:18'
+];
+
+$data = [
+    'user' => [
+        'name' => 'John Doe',
+        'email' => 'john@example.com',
+        'profile' => [
+            'age' => 25
+        ]
+    ]
+];
+```
+
+### Array Validation
+
+For validating arrays or collections, you can use the `array` validator along with other rules:
+
+```php
+$rules = [
+    'items' => 'required|array',
+    'items.*.id' => 'required|integer',
+    'items.*.name' => 'required|string|min:3',
+    'items.*.price' => 'required|numeric|min:0'
+];
+
+$data = [
+    'items' => [
+        [
+            'id' => 1,
+            'name' => 'Product 1',
+            'price' => 29.99
+        ],
+        [
+            'id' => 2,
+            'name' => 'Product 2',
+            'price' => 49.99
+        ]
+    ]
+];
 ```
 
 ### Custom Validators

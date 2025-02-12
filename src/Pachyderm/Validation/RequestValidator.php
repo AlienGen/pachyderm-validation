@@ -28,6 +28,9 @@ abstract class RequestValidator extends Request
      *     'user' => '', // This will be validated as an optional field. The nested fields will not be validated if the user field is not present.
      *     'user.name' => 'required|min:10',
      *     'user.age' => 'required|integer|min:18|max:65',
+     *     'friends' => 'array',
+     *     'friends.*.name' => 'required|string',
+     *     'friends.*.email' => 'required|email',
      * ]
      * 
      * @return array An associative array where keys are field names and values are validation rules.
