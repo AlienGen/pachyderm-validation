@@ -71,6 +71,7 @@ $data = [
         ]
     ]
 ];
+$errors = Validator::validate($rules, $data);
 ```
 
 ### Array Validation
@@ -99,6 +100,8 @@ $data = [
         ]
     ]
 ];
+
+$errors = Validator::validate($rules, $data);
 ```
 
 ### Custom Validators

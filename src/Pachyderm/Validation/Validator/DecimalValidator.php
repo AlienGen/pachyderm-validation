@@ -12,7 +12,27 @@ class DecimalValidator implements ValidatorInterface
             return true;
         }
 
-        return is_numeric($value) && strpos($value, '.') !== false;
+        // Convert to string if numeric
+        if (is_numeric($value)) {
+            $value = (string)$value;
+        }
+
+        // Must be a string at this point
+        if (!is_string($value)) {
+            return false;
+        }
+
+        // Must contain a decimal point
+        if (strpos($value, '.') === false) {
+            return false;
+        }
+
+        // Must be a valid decimal number format
+        if (!preg_match('/^-?\d+\.\d+$/', $value)) {
+            return false;
+        }
+
+        return true;
     }
 
     public function getErrorMessage(array $options = []): string

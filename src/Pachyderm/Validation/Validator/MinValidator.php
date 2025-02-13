@@ -6,10 +6,14 @@ use Pachyderm\Validation\ValidatorInterface;
 
 class MinValidator implements ValidatorInterface
 {
-    public function validate(mixed $value, array $options = []): bool  
+    public function validate(mixed $value, array $options = []): bool
     {
         if($value === null) {
             return true;
+        }
+
+        if(!is_numeric($value) && is_string($value)) {
+            $value = strlen($value) >= $options[0];
         }
 
         return $value >= $options[0];

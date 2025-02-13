@@ -13,11 +13,12 @@ class DateValidator implements ValidatorInterface
             return true;
         }
 
-        return DateTime::createFromFormat('Y-m-d', $value) !== false;
+        $date = DateTime::createFromFormat('Y-m-d', $value);
+        return $date && $date->format('Y-m-d') === $value;
     }
 
     public function getErrorMessage(array $options = []): string
     {
-        return 'The value must be a date.';
+        return 'The value must be a date in the format YYYY-MM-DD.';
     }
 }
