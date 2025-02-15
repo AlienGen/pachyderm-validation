@@ -27,5 +27,8 @@
                         "Pachyderm\\Tests": "tests/"
                 }
         },
-        "minimum-stability": "stable"
+        "minimum-stability": "stable",
+        "scripts": {
+                "test": "phpunit"
+        }
 }

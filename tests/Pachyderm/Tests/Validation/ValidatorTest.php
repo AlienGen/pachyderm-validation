@@ -266,4 +266,34 @@ class ValidatorTest extends TestCase
         $this->assertNotEmpty($errors);
         $this->assertArrayHasKey('optional_field', $errors);
     }
-} 
+
+    public function testValidationPassingObjectInsteadOfArray(): void
+    {
+        $rules = [
+            'from' => 'array',
+            'from.*.name' => 'string',
+            'from.*.address' => 'required|email',
+            'to' => 'array',
+            'to.*.name' => 'string',
+            'to.*.address' => 'required|email',
+        ];
+
+        $invalidData = [
+            'from' => [
+                    'name' => 'John Doe',
+                    'address' => 'john@example.com'
+            ],
+            'to' => [
+                'name' => 'Jane Smith',
+                'address' => 'jane@example.com'
+            ]
+        ];
+
+        $errors = Validator::validate($rules, $invalidData);
+        $this->assertNotEmpty($errors);
+        $this->assertArrayHasKey('from.0.name', $errors);
+        $this->assertArrayHasKey('from.0.address', $errors);
+        $this->assertArrayHasKey('to.0.name', $errors);
+        $this->assertArrayHasKey('to.0.address', $errors);
+    }
+}

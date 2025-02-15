@@ -17,6 +17,12 @@ To install the library, use Composer:
 composer require pachyderm/validation
 ```
 
+## Run the tests
+
+```bash
+composer test
+```
+
 ## Usage
 
 To use the library, you can create a new instance of the `Validator` class and pass the data you want to validate to the `validate` method.
