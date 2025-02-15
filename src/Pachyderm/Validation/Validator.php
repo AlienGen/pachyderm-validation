@@ -115,6 +115,11 @@ class Validator
         $validator = self::getInstance();
         $errors = [];
 
+        // Sort fields by depth to ensure parents are processed before children
+        uksort($rules, function($a, $b) {
+            return substr_count($a, '.') <=> substr_count($b, '.');
+        });
+
         foreach ($rules as $field => $ruleSet) {
             $validator->validateField($field, $ruleSet, $data, $rules, $errors);
         }
@@ -196,17 +201,19 @@ class Validator
                 // Recurse with the same remaining segments.
                 $this->recursiveValidateNested($item, $segments, $ruleSet, $errors, $newPrefix);
             }
-        } else {
-            // A literal segment.
-            if (is_array($data) && array_key_exists($segment, $data)) {
-                $newPrefix = array_merge($prefix, [$segment]);
-                $this->recursiveValidateNested($data[$segment], $segments, $ruleSet, $errors, $newPrefix);
-            } else {
-                // Key not found – if the rule is 'required', add an error.
-                if (str_contains($ruleSet, 'required')) {
-                    $errors[implode('.', array_merge($prefix, [$segment]))] = ['The field is required.'];
-                }
-            }
+            return;
+        }
+
+        // A literal segment.
+        if (is_array($data) && array_key_exists($segment, $data)) {
+            $newPrefix = array_merge($prefix, [$segment]);
+            $this->recursiveValidateNested($data[$segment], $segments, $ruleSet, $errors, $newPrefix);
+            return;
+        }
+
+        // Key not found – if the rule is 'required', add an error.
+        if (str_contains($ruleSet, 'required')) {
+            $errors[implode('.', array_merge($prefix, [$segment]))] = ['The field is required.'];
         }
     }
 
