@@ -163,6 +163,13 @@ class Validator
             return;
         }
         
+        // Only re-index if the next segment is a wildcard (i.e. this level is expected to be a list)
+        if (isset($segments[1]) && $segments[1] === '*') {
+            if (array_keys($value) !== range(0, count($value) - 1)) {
+                $value = array_values($value);
+            }
+        }
+
         // Use the new recursive helper starting from the root.
         // Remove the root segment (already validated) so that the helper receives the remainder.
         $this->recursiveValidateNested($value, array_slice($segments, 1), $ruleSet, $errors, [$root]);
@@ -183,38 +190,30 @@ class Validator
             }
             return;
         }
-        
-        // Get the next segment (which can be a literal key or a wildcard "*")
-        $segment = array_shift($segments);
+
+        // Make a copy of segments so that sibling recursions have the full set.
+        $remainingSegments = $segments;
+        $segment = array_shift($remainingSegments);
+
         if ($segment === '*') {
-            // Expect $data to be an array; iterate its items.
             if (!is_array($data)) {
-                // If required and data is not an array, add an error.
-                if (str_contains($ruleSet, 'required')) {
-                    $errors[implode('.', $prefix)] = ['The field is required.'];
-                }
+                $errors[implode('.', $prefix)] = ['The field is required.'];
                 return;
             }
             foreach ($data as $index => $item) {
-                // For each item, extend the prefix with the current index.
-                $newPrefix = array_merge($prefix, [$index]);
-                // Recurse with the same remaining segments.
-                $this->recursiveValidateNested($item, $segments, $ruleSet, $errors, $newPrefix);
+                $newPrefix = array_merge($prefix, [(string)$index]);
+                $this->recursiveValidateNested($item, $remainingSegments, $ruleSet, $errors, $newPrefix);
             }
             return;
         }
 
-        // A literal segment.
         if (is_array($data) && array_key_exists($segment, $data)) {
             $newPrefix = array_merge($prefix, [$segment]);
-            $this->recursiveValidateNested($data[$segment], $segments, $ruleSet, $errors, $newPrefix);
+            $this->recursiveValidateNested($data[$segment], $remainingSegments, $ruleSet, $errors, $newPrefix);
             return;
         }
 
-        // Key not found – if the rule is 'required', add an error.
-        if (str_contains($ruleSet, 'required')) {
-            $errors[implode('.', array_merge($prefix, [$segment]))] = ['The field is required.'];
-        }
+        $errors[implode('.', array_merge($prefix, [$segment]))] = ['The field is required.'];
     }
 
     protected function getFieldValue(?array $data, string $field)

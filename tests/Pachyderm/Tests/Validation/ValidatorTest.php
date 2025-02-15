@@ -166,12 +166,12 @@ class ValidatorTest extends TestCase
     public function testNestedObjectValidation(): void
     {
         $rules = [
-            'user' => 'required|array',
-            'user.profile' => 'required|array',
-            'user.profile.personal' => 'required|array',
+            'user' => 'required',
+            'user.profile' => 'required',
+            'user.profile.personal' => 'required',
             'user.profile.personal.firstName' => 'required|string|min:2',
             'user.profile.personal.lastName' => 'required|string|min:2',
-            'user.profile.contact' => 'required|array',
+            'user.profile.contact' => 'required',
             'user.profile.contact.email' => 'required|email',
             'user.profile.contact.phones' => 'required|array',
             'user.profile.contact.phones.*.number' => 'required|string',

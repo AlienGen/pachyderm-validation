@@ -4,7 +4,6 @@ namespace Pachyderm\Validation;
 
 use Pachyderm\Exceptions\ValidationException;
 use Pachyderm\Exchange\Request;
-use Pachyderm\Utils\IterableObjectSet;
 
 /**
  * Abstract class RequestValidator
